@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bombay Creamery Rollout Cockpit</title>
+<meta name="description" content="MM-II WAI project dashboard: national rollout plan for Bombay Creamery (Tanish Tyagi, IIM Ranchi)">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+<h1>Bombay Creamery: national rollout cockpit</h1>
+<p class="sub">MM-II WAI project, Tanish Tyagi (M56D-26, Sec D). Interactive companion to the report: rollout prioritisation, price-ladder simulator, freezer economics and revenue scenarios. Synthetic data and hypothetical parameters are labelled; market facts are cited in the report.</p>
+<div class="tiles">
+ <div class="tile"><div class="k">FY29 net revenue, base case</div><div class="v" id="t1"></div><div class="d" id="t1d"></div></div>
+ <div class="tile"><div class="k">Implied FY29 share of market (retail value)</div><div class="v" id="t2"></div><div class="d">vs Amul ~19%, Kwality Wall's ~9%</div></div>
+ <div class="tile"><div class="k">Wave 2 states (current weights)</div><div class="v" id="t3" style="font-size:16px;line-height:1.3"></div></div>
+ <div class="tile"><div class="k">Freezer payback, Tier-1 kirana</div><div class="v" id="t4"></div><div class="d">from the calculator below</div></div>
+</div>
+<div class="grid">
+ <div class="card">
+  <h2>1. Which states next? Rollout priority index</h2>
+  <div class="note">Move the weights. Top 6 become Wave 2. Market size and affordability use Census 2011 and state NSDP; season, gap, competition and logistics are analyst-assigned hypothetical scores.</div>
+  <div class="ctl" id="wctl"></div>
+  <div class="legend"><span><i style="background:var(--s1)"></i>Wave 2</span><span><i style="background:var(--s2)"></i>Wave 3</span><span><i style="background:var(--s3)"></i>Wave 4</span></div>
+  <div id="roll"></div>
+ </div>
+ <div class="card">
+  <h2>2. Price-ladder simulator (3,000 synthetic consumers)</h2>
+  <div class="note">Logit choice model: price, real-dairy preference and outlet availability. Shares are per buying occasion in markets where Bombay Creamery is present.</div>
+  <div class="ctl">
+   <label>Entry pack price (Rs) <output id="o_pe"></output><input type="range" id="pe" min="5" max="20" step="1" value="10"></label>
+   <label>Core pack price (Rs) <output id="o_pc"></output><input type="range" id="pc" min="15" max="40" step="1" value="20"></label>
+   <label>Premium pack price (Rs) <output id="o_pp"></output><input type="range" id="pp" min="30" max="80" step="5" value="40"></label>
+   <label>Freezer availability vs today <output id="o_av"></output><input type="range" id="av" min="0.5" max="2" step="0.05" value="1"></label>
+   <label>Amul entry price (Rs) <output id="o_am"></output><input type="range" id="am" min="6" max="15" step="1" value="10"></label>
+  </div>
+  <div class="row"><div><div class="note">Bombay Creamery share</div><div class="big" id="sh"></div></div><div><div class="note">Gross profit per 1,000 occasions</div><div class="big" id="gp"></div></div></div>
+  <div class="legend"><span><i style="background:var(--s1)"></i>Bombay Creamery</span><span><i style="background:var(--s2)"></i>Amul</span><span><i style="background:var(--s3)"></i>Kwality Wall's</span><span><i style="background:var(--s4)"></i>Local / frozen dessert</span><span><i style="background:var(--rule)"></i>No purchase</span></div>
+  <div id="lad"></div>
+ </div>
+ <div class="card">
+  <h2>3. Freezer payback calculator</h2>
+  <div class="note">One branded cabinet in one outlet. Contribution after retailer (adjustable) and distributor (6%) margins, GST 18%, COGS and cold-chain logistics (8%).</div>
+  <div class="ctl">
+   <label>Units sold per day <output id="o_u"></output><input type="range" id="u" min="3" max="35" step="1" value="14"></label>
+   <label>Average price (Rs) <output id="o_asp"></output><input type="range" id="asp" min="10" max="35" step="1" value="17"></label>
+   <label>Freezer + install (Rs) <output id="o_fz"></output><input type="range" id="fz" min="15000" max="45000" step="1000" value="30000"></label>
+   <label>Retailer margin <output id="o_rm"></output><input type="range" id="rm" min="0.12" max="0.30" step="0.01" value="0.20"></label>
+   <label>COGS ratio <output id="o_cg"></output><input type="range" id="cg" min="0.45" max="0.70" step="0.01" value="0.59"></label>
+  </div>
+  <div class="row"><div><div class="note">Payback</div><div class="big" id="pb"></div></div><div><div class="note">Monthly contribution</div><div class="big" id="mc"></div></div><div><div class="note">Units/day for 12-month payback</div><div class="big" id="be"></div></div></div>
+  <div id="pbbar"></div>
+ </div>
+ <div class="card">
+  <h2>4. Revenue scenarios by rollout wave</h2>
+  <div class="seg" id="scen"><button data-s="Bear">Bear</button><button data-s="Base" class="on">Base</button><button data-s="Bull">Bull</button></div>
+  <div class="legend"><span><i style="background:var(--w1)"></i>Wave 1 West (live)</span><span><i style="background:var(--s1)"></i>Wave 2 (Feb 2027)</span><span><i style="background:var(--s2)"></i>Wave 3 (Nov 2027)</span><span><i style="background:var(--s3)"></i>Wave 4 (Nov 2028)</span></div>
+  <div id="fc"></div>
+  <div class="note" id="fytxt"></div>
+ </div>
+</div>
+<details><summary>Table view: rollout index (current weights)</summary><div class="tw"><table id="tbl"></table></div></details>
+<details><summary>Assumptions and limits</summary><p class="note">Synthetic panel and hypothetical parameters are illustrative and allowed by the WAI guidelines; they show direction and sensitivity, not a forecast of actual Reliance results. Real anchors: IMARC market size (Rs 271.7 bn, 2026E; 11.29% CAGR), Kwality Wall's Q1 FY27 gross margin 45.6%, Census 2011 urbanisation, state per-capita NSDP (Economic Survey 2023-24). The availability effect assumes a log-availability coefficient of 1; at 0.5 it roughly halves.</p></details>
+<div class="tip" id="tip"></div>
+</div>
+<script src="assets/d3.v7.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
